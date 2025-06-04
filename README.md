@@ -55,6 +55,24 @@ This project presents a real-time, wearable IoT system to monitor vital health p
 - Usability tested with patients, physiotherapists, and caregivers
 - OLED readability and Flask interface validated for home and clinical use
 
+## Hardware Result 
+![alt text](image-2.png)
+
+## Cloud Result
+![alt text](image-3.png)
+
+## Software Result:-
+
+## 1.WEBSITE PATIENT INFORMATION PAGE
+![alt text](image-4.png)
+
+## 2.Patient’s Health Data Graphs
+![alt text](image-5.png)
+
+## 3.Disorder Remedies Page
+![alt text](image-6.png)
+
+
 ## 🔐 Safety Features
 - Buzzer alerts for:
   - BPM out of 50–120
