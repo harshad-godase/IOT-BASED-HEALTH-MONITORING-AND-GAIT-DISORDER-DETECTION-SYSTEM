@@ -1,0 +1,61 @@
+<!-- templates/graphs.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div id="graphs-section">
+    <h1>Health Data Graphs</h1>
+    <p>Comparison between normal baseline (green) and live readings (red)</p>
+
+    <!-- X Acceleration Graph -->
+    <div>
+        <h2>X Acceleration</h2>
+        <img src="{{ x_graph }}" alt="X Acceleration Graph">
+    </div>
+
+    <!-- Y Acceleration Graph -->
+    <div>
+        <h2>Y Acceleration</h2>
+        <img src="{{ y_graph }}" alt="Y Acceleration Graph">
+    </div>
+
+    <!-- Z Acceleration Graph -->
+    <div>
+        <h2>Z Acceleration</h2>
+        <img src="{{ z_graph }}" alt="Z Acceleration Graph">
+    </div>
+
+    <!-- Classification Result -->
+    <table width="100%">
+        <tr>
+            <td>
+                <p>Analysis Result: <strong>{{ classification }}</strong></p>
+                <div class="live-readings">
+                    <p>Live Accelerometer Readings:</p>
+                    <ul>
+                        <li>X: <strong>{{ latest_x }}</strong></li>
+                        <li>Y: <strong>{{ latest_y }}</strong></li>
+                        <li>Z: <strong>{{ latest_z }}</strong></li>
+                    </ul>
+                </div>
+            </td>
+            <td align="right">
+                <button onclick="printGraphs()">Generate Report</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+function printGraphs() {
+    const content = document.getElementById('graphs-section').innerHTML;
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Health Report</title></head><body>');
+    printWindow.document.write(content);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+{% endblock %}
+
+

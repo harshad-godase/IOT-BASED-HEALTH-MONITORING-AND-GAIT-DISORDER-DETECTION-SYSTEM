@@ -1,0 +1,30 @@
+<!-- templates/disorder_type.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content">
+    <h1>Disorder Remedies</h1>
+    
+    <form method="POST" action="{{ url_for('disorder_type') }}">
+        <div class="form-group">
+            <label for="disorder">Select Disorder Type:</label>
+            <select id="disorder" name="disorder" required>
+                <option value="" {% if not selected_disorder %}selected{% endif %}>Select Disorder</option>
+                {% for disorder in disorders %}
+                <option value="{{ disorder }}" {% if selected_disorder == disorder %}selected{% endif %}>{{ disorder }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit">Get Remedies</button>
+    </form>
+    
+    {% if remedy %}
+    <div class="remedy">
+        <h2>Recommended Remedies for {{ selected_disorder }}</h2>
+        <p>{{ remedy }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

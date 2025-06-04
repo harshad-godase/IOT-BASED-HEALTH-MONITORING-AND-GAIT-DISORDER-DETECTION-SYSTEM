@@ -1,0 +1,152 @@
+//*************************************************************************
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino resetpin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+
+//****************************************************************************************
+
+
+#include <Wire.h>
+#include "MAX30100_PulseOximeter.h"
+#define REPORTING_PERIOD_MS 1000
+// Connections : SCL PIN - D1 , SDA PIN - D2 , INT PIN - D0
+PulseOximeter pox;
+
+uint16_t BPM, SpO2;
+uint32_t tsLastReport = 0;
+
+//*************************************************************************************************
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#define ONE_WIRE_BUS 23
+//uint8_t tempPin = 36;
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+int cel;
+//****************************************************************
+
+
+//****************************************************************************
+
+String sensor_data, values;
+String g_lvl;
+
+//**********************************************************************
+void onBeatDetected()
+{
+  
+  Serial.println("Beat Detected!");
+  digitalWrite(2, HIGH);
+  //delay(10);
+  
+}
+
+void setup()
+{
+  Serial.begin(9600);
+ Serial2.begin(9600);
+  pinMode(2, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(36, INPUT);
+  pinMode(5,INPUT_PULLUP);
+  
+ // Serial.print("Connecting to ");
+ // Serial.println(ssid);
+  
+  WiFi.begin(ssid, password);
+  WiFi.status();
+ Serial.print("Connecting to ");
+ Serial.println(ssid);
+  Serial.print("Initializing Pulse Oximeter..");
+if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+  
+    Serial.println(F("SSD1306 allocation failed"));
+    Serial.println("ff");
+
+   // for (;;); // Don't proceed, loop forever
+    
+     }
+     
+ display.clearDisplay();
+  // Display Text
+  display.setTextSize(1.5);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Health Monitoring");
+  display.println("      System");
+  display.display();
+  delay(2000);
+  display.clearDisplay();
+
+  if (pox.begin())
+  {
+    Serial.println("FAILED");
+    for (;;);
+   
+  }
+  else
+  {
+    
+    Serial.println("SUCCESS");
+    pox.setOnBeatDetectedCallback(onBeatDetected);
+  
+  }
+  
+  
+sensors.begin();
+
+}
+
+void loop()
+{
+  
+
+
+ 
+  
+  BPM = pox.getHeartRate();
+  
+  SpO2 = pox.getSpO2();
+
+
+
+if (millis() - tsLastReport > REPORTING_PERIOD_MS)
+  {
+    
+    Serial.print("Heart rate:");
+    Serial.print(BPM);
+    Serial.print(" bpm / SpO2:");
+    Serial.print(SpO2);
+    Serial.println(" %");
+    Serial.println(cel);
+  
+
+display.clearDisplay();
+  // Display Inverted Text
+   display.setTextSize(2);
+  display.setTextColor(WHITE); 
+  display.setCursor(0, 0);
+  display.print("BPM: ");
+  display.println(BPM);
+   display.print("O2: ");
+  display.println(SpO2);
+   display.print("Temp: ");
+  display.print(cel);
+  display.println( "F");
+ 
+  display.display();
+  delay(100);
+
+
+  
+  }
+
+}
+
+ 
