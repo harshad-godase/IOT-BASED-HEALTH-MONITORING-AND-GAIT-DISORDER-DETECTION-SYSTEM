@@ -16,7 +16,7 @@ This project presents a real-time, wearable IoT system to monitor vital health p
 ## 🔌 Hardware Components
 - **ESP32 Microcontroller** (central controller with Wi-Fi)
 - **MAX30100** Pulse & SpO₂ Sensor
-- **LM35** Temperature Sensor
+- **DS18B20** Temperature Sensor
 - **ADXL345** Accelerometer (mounted on leg)
 - **OLED Display** (0.96” I2C)
 - **Buzzer** (for real-time alerts)
